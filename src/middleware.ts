@@ -27,14 +27,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api/billing
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    "/((?!api/billing|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  // 新版 EdgeOne OpenNext 运行时会在全局 Middleware 中异常，静态页面无需刷新会话，
+  // 因此仅让认证相关 API 经过 Middleware，避免首页和编辑器返回 545。
+  matcher: ["/api/auth/:path*"],
 };
